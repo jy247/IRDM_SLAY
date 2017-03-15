@@ -6,28 +6,44 @@ implemented in python,
 web front end?
 UCL Slay (Schukit, Lee, Anand, Youldon)
 
-Page Rank
--web crawler? Scrapy?
--restricted to ucl dimain or not?
--how to save/store the model
+Flow:
 
+Search terms -> pre-process -> reverse dictionary -> ranking model -> results.
+
+Page Rank
+--Ruben 
+-web crawler? Scrapy?
+-restricted to ucl domain or not?
+-how to save/store the model
+-graph for pagerank, adjacency matrix -> pagerank
+-pre-canned pageranks.
+dictionary of URL -> importance (normalised)
+database of URL -> content (header / body)
+
+--Jack
+pre-process search terms
+stop-words, synonyms, spelling mistakes
 reverse index:
 bag of words, bi-gram, n-gram, language model, 
 data-structure
 save/store
 meta-tags, title?
 
+--Manu	
+Ranking engine
 context? time, location, other info about requester
+hardcode more importance for certain hub-pages 
 
-
+--Hae?
+Start by evaluating google / UCL Internal search
 Evaluation metrics - precision / recall, precision at 10, average precision, navigational search.  
 Test queries with specified results
 Automate some of the ranking?
+Front-end?
 
-
-stop-words, synonyms, spelling mistakes
 
 
 not possible to crawl to results returned by an internal search engine
-
+online learning?
+feed back tweaks into pagerank?
 
