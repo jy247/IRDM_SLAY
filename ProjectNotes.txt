@@ -1,0 +1,33 @@
+Project notes
+
+literature review * 4
+
+implemented in python,
+web front end?
+UCL Slay (Schukit, Lee, Anand, Youldon)
+
+Page Rank
+-web crawler? Scrapy?
+-restricted to ucl dimain or not?
+-how to save/store the model
+
+reverse index:
+bag of words, bi-gram, n-gram, language model, 
+data-structure
+save/store
+meta-tags, title?
+
+context? time, location, other info about requester
+
+
+Evaluation metrics - precision / recall, precision at 10, average precision, navigational search.  
+Test queries with specified results
+Automate some of the ranking?
+
+
+stop-words, synonyms, spelling mistakes
+
+
+not possible to crawl to results returned by an internal search engine
+
+
