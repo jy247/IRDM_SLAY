@@ -24,23 +24,29 @@ database of URL -> content (header / body)
 pre-process search terms
 stop-words, synonyms, spelling mistakes
 reverse index:
-bag of words, bi-gram, n-gram, language model, 
+bag of words, bi-gram, n-gram, language model, query document vector similarity
 data-structure
 save/store
 meta-tags, title?
 
---Manu	
-Ranking engine
-context? time, location, other info about requester
-hardcode more importance for certain hub-pages 
-
---Hae?
+--Manu
 Start by evaluating google / UCL Internal search
 Evaluation metrics - precision / recall, precision at 10, average precision, navigational search.  
 Test queries with specified results
 Automate some of the ranking?
 Front-end?
 
+Suggestions for eval:
+
+search terms 'jun wang', 'data mining professor', 'jun wang phd opportunities'
+http://www.cs.ucl.ac.uk/cs_people/J.Wang.html/
+http://web4.cs.ucl.ac.uk/staff/jun.wang/blog/
+http://web4.cs.ucl.ac.uk/staff/jun.wang/blog/prospective-students/
+
+search terms 'information security', 'web security', 'cyber security', 'study information security', 'masters computer science security'
+http://sec.cs.ucl.ac.uk/home/
+http://sec.cs.ucl.ac.uk/ace_csr/
+http://www.cs.ucl.ac.uk/admissions/msc_isec/
 
 
 not possible to crawl to results returned by an internal search engine
