@@ -10,13 +10,21 @@ Flow:
 
 Search terms -> pre-process -> reverse dictionary -> ranking model -> results.
 
+google: font, capitalisation, anchor text
+
 Page Rank
 --Ruben 
--web crawler? Scrapy?
--restricted to ucl domain or not?
+x -web crawler? Scrapy?
+x -restricted to ucl domain or not?
+x -pre-canned pageranks.
+
+vocab file has each word as an index,
+
+
+
 -how to save/store the model
 -graph for pagerank, adjacency matrix -> pagerank
--pre-canned pageranks.
+
 dictionary of URL -> importance (normalised)
 database of URL -> content (header / body)
 
