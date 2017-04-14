@@ -14,6 +14,7 @@ class WordSpider(scrapy.Spider):
     def from_crawler(cls, crawler, *args, **kwargs):
         spider = super(WordSpider, cls).from_crawler(crawler, *args, **kwargs)
         crawler.signals.connect(spider.spider_closed, signal=signals.spider_closed)
+        input("Press Enter to continue...")
         return spider
 
     # Signal Handler (similar to those in C) that intercepts spider_closed signal when crawling over
