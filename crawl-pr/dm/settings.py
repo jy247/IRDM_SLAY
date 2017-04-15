@@ -14,12 +14,24 @@ BOT_NAME = 'dm'
 SPIDER_MODULES = ['dm.spiders']
 NEWSPIDER_MODULE = 'dm.spiders'
 
+DNS_TIMEOUT = 5
+DOWNLOAD_TIMEOUT = 10
 
+IGNORED_EXTENSIONS = {
+    '7z', '7zip', 'xz', 'gz', 'tar', 'bz2', 'Z'  # archives
+    'cdr',  # Corel Draw files
+    'apk', # Android packages
+}
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'dm (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
+
+# DOWNLOADER_MIDDLEWARES = {
+#     'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware': None,
+#     'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware': None
+# }
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
