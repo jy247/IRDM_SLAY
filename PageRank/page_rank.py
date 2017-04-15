@@ -1,27 +1,49 @@
 import numpy as np
+import pickle
+with open('parent_to_children_urls_0.pickle', 'rb') as f:
+    data = pickle.load(f)
 
-a = np.empty([1,2], dtype=int)
+data = [['a', ['b', 'c', 'd']], ['b', ['a', 'd']], ['c', ['c']], ['d', ['b', 'c']]]
+num_urls = len(data)
+matrix = np.zeros([num_urls, num_urls])
+rows_in_matrix = set([])
+url_dict = {}
+url_count = 0
 
-row = []
-for num in range(0, 2):
-    row.append(num + 3)
 
-a = np.append(a, [row], axis=0)
+for row in range(len(data)):
+    url = data[row][0]
 
-a[0] = row
+    # Account for duplicates
+    if url in rows_in_matrix:
+        continue
 
-b = np.empty([1,2], dtype=int)
-rowb = []
-for num in range(0, 2):
-    rowb.append(num + 5)
+    row_num = 0
+    if url in url_dict:
+        row_num = url_dict[url]
+    else:
+        url_dict[url] = url_count
+        row_num = url_count
+        url_count = url_count + 1
 
-b = np.append(b, [row], axis=0)
-b[0] = rowb
+    num_outlinks = len(data[row][1])
 
-print(a)
-print(b)
+    matrix_row = [0 for i in range(num_urls)]
+    cell_value = 1/num_outlinks
+    for num in range(num_outlinks):
+        url_outlink = data[row][1][num]
+        col_num = 0
+        if url_outlink in url_dict:
+            col_num = url_dict[url_outlink]
+        else:
+            url_dict[url_outlink] = url_count
+            col_num = url_count
+            url_count = url_count + 1
 
-result = np.matmul(a, b)
+        matrix_row[col_num] = cell_value
 
-print(result)
+    matrix[row_num] = matrix_row
+
+
+print(matrix)
 
