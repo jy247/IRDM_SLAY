@@ -3,6 +3,17 @@ from collections import defaultdict
 class ReverseDictionary():
 
     #?PRIORITISE_WORDS_NEAR_TOP = True
+    def Encode(self):
+        all_dic = {'index_to_num_words_dic': self.index_to_num_words_dic,
+                   'word_to_indices_dic': self.word_to_indices_dic,
+                   'index_to_url_dic': self.index_to_url_dic}
+        return all_dic
+
+    def Decode(self, all_dic):
+        self.index_to_num_words_dic = all_dic['index_to_num_words_dic']
+        self.word_to_indices_dic = all_dic['word_to_indices_dic']
+        self.index_to_url_dic = all_dic['index_to_url_dic']
+
 
     index_to_url_dic = {}
 
@@ -14,30 +25,37 @@ class ReverseDictionary():
     word_to_indices_dic = {}
 
 
-    def build_dictionary(self, urls, contents):
+    # def add_all(self, urls, contents):
+    #
+    #     if type(urls) is str:
+    #         self.add_one(urls, contents)
+    #     else:
+    #         for url_index in range(len(urls)):
+    #             one_url =  urls[url_index]
+    #             one_content = contents[url_index]
+    #             self.add_one(one_url, one_content)
 
-        for url_index in range(0,len(urls)):
-            one_url =  urls[url_index]
-            one_content = contents[url_index]
-            num_words = len(one_content)
-            self.index_to_url_dic[url_index] = one_url
-            self.index_to_num_words_dic[url_index] = num_words
+    def add_one(self, one_url, one_content, unique_id):
 
-            for i in range(num_words):
-                word = one_content[i]
-                if word in self.word_to_indices_dic:
-                    word_dic = self.word_to_indices_dic[word]
-                else:
-                    word_dic = {}
-                    self.word_to_indices_dic[word] = word_dic
+        num_words = len(one_content)
+        self.index_to_url_dic[unique_id] = one_url
+        self.index_to_num_words_dic[unique_id] = num_words
 
-                if not url_index in word_dic:
-                    word_locations = []
-                    word_dic[url_index] = word_locations
-                else:
-                    word_locations = word_dic[url_index]
+        for i in range(num_words):
+            word = one_content[i]
+            if word in self.word_to_indices_dic:
+                word_dic = self.word_to_indices_dic[word]
+            else:
+                word_dic = {}
+                self.word_to_indices_dic[word] = word_dic
 
-                word_locations.append(i)
+            if not unique_id in word_dic:
+                word_locations = []
+                word_dic[unique_id] = word_locations
+            else:
+                word_locations = word_dic[unique_id]
+
+            word_locations.append(i)
 
     #return dictionary of url to number of occurances of word
     def get_urls_one_word(self, word):
@@ -86,6 +104,20 @@ class ReverseDictionary():
             return self.get_urls_one_word(search_words[0])
         else:
             return self.get_urls_multi_words(search_words)
+
+    def combine(self, another_dic):
+
+        for key in another_dic.index_to_url_dic:
+            self.index_to_url_dic[key] = another_dic.index_to_url_dic[key]
+
+        for key in another_dic.index_to_num_words_dic:
+            self.index_to_num_words_dic[key] = another_dic.index_to_num_words_dic[key]
+
+        for key in another_dic.word_to_indices_dic:
+            if key in self.word_to_indices_dic:
+                self_one_word_dic = self.word_to_indices_dic[key]
+                for url_index in another_dic.word_to_indices_dic[key]:
+                    self_one_word_dic[url_index] = another_dic.word_to_indices_dic[key][url_index]
 
 
 
