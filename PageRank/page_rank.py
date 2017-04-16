@@ -1,6 +1,18 @@
 import numpy as np
 import pickle
 
+
+def calculate_page_ranks(matrix, beta):
+    matrix_dim = len(matrix)
+    vector = [1/matrix_dim for i in range(matrix_dim)]
+
+    for i in range(10):
+        mult = np.matmul(matrix, vector)
+        vector = mult + (1-beta)/matrix_dim
+
+    print(vector)
+
+
 def get_num_links(link_dict):
     links_seen = set()
     count = 0
@@ -17,7 +29,7 @@ def get_num_links(link_dict):
 
     return count
 
-def create_pr_matrix(data):
+def create_pr_matrix(data, beta):
     num_urls = get_num_links(data)
     matrix = np.zeros([num_urls, num_urls])
     rows_in_matrix = set([])
@@ -49,13 +61,15 @@ def create_pr_matrix(data):
             matrix_row[col_num] = cell_value
 
         matrix[row_num] = matrix_row
-        print(url_dict)
+
+    matrix = np.multiply(matrix, (beta))
 
     return np.rot90(np.fliplr(matrix))
 
 with open('parent_to_children_urls_0.pickle', 'rb') as f:
     data = pickle.load(f)
 
-data = {'a': ['b','c','d'], 'b':['a','d'], 'c':['c'], 'd':['b', 'c']}
+#data = {'a': ['b','c','d'], 'b':['a','d'], 'c':['c'], 'd':['b', 'c']}
 
-print(create_pr_matrix(data))
+matrix = create_pr_matrix(data, .8)
+calculate_page_ranks(matrix, .8)
