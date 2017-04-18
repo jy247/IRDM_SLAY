@@ -4,6 +4,7 @@ import cherrypy
 import json
 from ReverseDictionary import ReverseDictionary
 from PreProcess import PreProcess
+from cherrypy._cpserver import Server
 
 class SearchService(object):
 
@@ -42,7 +43,7 @@ class SearchService(object):
 
         self.full_dic.get_urls(search_terms)
 
-
-
 if __name__ == '__main__':
+
+    cherrypy.config.update({'server.socket_port': 8082})
     cherrypy.quickstart(SearchService())

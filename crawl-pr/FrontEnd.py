@@ -9,7 +9,7 @@ from collections import deque
 
 class FrontEnd(object):
 
-    SearchService_Root = 'http://127.0.0.1:8080/'
+    SearchService_Root = 'http://127.0.0.1:8082/'
     index_file = './index.html'
     #lifecycle??
     sesh = requests.Session()
@@ -19,9 +19,10 @@ class FrontEnd(object):
         et = xml.etree.ElementTree.parse(self.index_file)
         root = et.getroot()
         if len(search_terms) != 0:
-            #the_list = et.find('ul')
+            ret_urls = self.sesh.get(self.URLService_Root + 'search/', params={'search_terms': search_terms})
+            i = 0
             for item in root.findall('body/ul/li'):
-                item.text = 'foobar'
+                item.text = ret_urls[i]
 
         return xml.etree.ElementTree.tostring(root)
 
@@ -36,4 +37,5 @@ class FrontEnd(object):
 
 
 if __name__ == '__main__':
+    cherrypy.config.update({'server.socket_port': 8081})
     cherrypy.quickstart(FrontEnd())
