@@ -7,12 +7,13 @@ class URLClient():
     #session lifecycle handling?
     sesh = requests.Session()
     registration_id = 0
+    URLService_Root = 'http://127.0.0.1:8080/'
 
     def SendPushRequest(self, urls):
-        self.sesh.get('http://127.0.0.1:8080/push/', params={'urls': urls})
+        self.sesh.get(self.URLService_Root + 'push/', params={'urls': urls})
 
     def SendPullRequest(self):
-        r = self.sesh.get('http://127.0.0.1:8080/pull/', params={'id': self.registration_id})
+        r = self.sesh.get(self.URLService_Root + 'pull/', params={'id': self.registration_id})
         r = json.loads(r.text)
         # if type(r) is str:
         #     return [r]
@@ -20,14 +21,14 @@ class URLClient():
         return r
 
     def CheckTermination(self):
-        r = self.sesh.get('http://127.0.0.1:8080/checkterminate/')
+        r = self.sesh.get(self.URLService_Root + 'checkterminate/')
         return r
 
     def reset(self):
-        r = self.sesh.get('http://127.0.0.1:8080/reset/')
+        r = self.sesh.get(self.URLService_Root + 'reset/')
 
     def Register(self):
-        r = self.sesh.get('http://127.0.0.1:8080/register/')
+        r = self.sesh.get(self.URLService_Root + 'register/')
         self.registration_id = r.text
         return self.registration_id
 
