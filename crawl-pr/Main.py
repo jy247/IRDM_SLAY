@@ -14,6 +14,7 @@ contents.append('some story about a cat hat')
 contents.append('running')
 
 
+
 pp_obj = PreProcess()
 for i in range(0, len(contents)):
     contents[i] = pp_obj.process_sentence(contents[i])
@@ -27,14 +28,14 @@ full_dic = ReverseDictionary()
 full_parent_to_children_urls_dic = {}
 try:
     while True:
-        with open('./crawl-pr/data/Rdic_title_{}.pickle'.format(i), 'rb') as handle:
+        with open('./data/Rdic_title_{}.pickle'.format(i), 'rb') as handle:
             titles_dic = pickle.load(handle)
 
-        with open('./crawl-pr/data/parent_to_children_urls_{}.pickle'.format(i), 'rb') as handle:
-            parent_to_children_urls_dic = pickle.load(handle)
-
-        for key in parent_to_children_urls_dic:
-            full_parent_to_children_urls_dic[key] = parent_to_children_urls_dic[key]
+        # with open('./crawl-pr/data/parent_to_children_urls_{}.pickle'.format(i), 'rb') as handle:
+        #     parent_to_children_urls_dic = pickle.load(handle)
+        #
+        # for key in parent_to_children_urls_dic:
+        #     full_parent_to_children_urls_dic[key] = parent_to_children_urls_dic[key]
 
         new_dic = ReverseDictionary()
         new_dic.Decode(titles_dic)
@@ -47,6 +48,7 @@ except:
     print('loaded {} files'.format(i))
     print('size of full dic: {}'.format(len(full_dic.index_to_url_dic)))
     print('size of parent to child dic: {}'.format(len(full_parent_to_children_urls_dic)))
+
 
 
 

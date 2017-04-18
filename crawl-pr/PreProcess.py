@@ -1,13 +1,13 @@
 from collections import defaultdict
-import nltk
 import re
+import nltk
 
 
 class PreProcess():
 
     regex = re.compile('[^a-zA-Z ]')
     stop_words = defaultdict()
-    stemmer = nltk.PorterStemmer()
+    # stemmer = nltk.PorterStemmer()
    # tokenizer = nltk.LineTokenizer()
 
     with open("stop_words.txt") as f:
@@ -31,7 +31,8 @@ class PreProcess():
     def process_sentence(self, sentence):
         punc_less = self.remove_punc(sentence)
         caps_less = punc_less.lower()
-        words = nltk.word_tokenize(self.stemmer.stem(caps_less), 'english')
+        # self.stemmer.stem(caps_less)
+        words = nltk.word_tokenize(caps_less, 'english')
         print(words)
         return self.remove_stop_words(words)
 

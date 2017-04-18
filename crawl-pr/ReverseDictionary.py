@@ -2,6 +2,8 @@ from collections import defaultdict
 
 class ReverseDictionary():
 
+    unique_id = 0
+
     #?PRIORITISE_WORDS_NEAR_TOP = True
     def Encode(self):
         all_dic = {'index_to_num_words_dic': self.index_to_num_words_dic,
@@ -35,11 +37,11 @@ class ReverseDictionary():
     #             one_content = contents[url_index]
     #             self.add_one(one_url, one_content)
 
-    def add_one(self, one_url, one_content, unique_id):
+    def add_one(self, one_url, one_content):
 
         num_words = len(one_content)
-        self.index_to_url_dic[unique_id] = one_url
-        self.index_to_num_words_dic[unique_id] = num_words
+        self.index_to_url_dic[self.unique_id] = one_url
+        self.index_to_num_words_dic[self.unique_id] = num_words
 
         for i in range(num_words):
             word = one_content[i]
@@ -49,13 +51,15 @@ class ReverseDictionary():
                 word_dic = {}
                 self.word_to_indices_dic[word] = word_dic
 
-            if not unique_id in word_dic:
+            if not self.unique_id in word_dic:
                 word_locations = []
-                word_dic[unique_id] = word_locations
+                word_dic[self.unique_id] = word_locations
             else:
-                word_locations = word_dic[unique_id]
+                word_locations = word_dic[self.unique_id]
 
             word_locations.append(i)
+
+        self.unique_id += 1
 
     #return dictionary of url to number of occurances of word
     def get_urls_one_word(self, word):
@@ -107,17 +111,22 @@ class ReverseDictionary():
 
     def combine(self, another_dic):
 
-        for key in another_dic.index_to_url_dic:
-            self.index_to_url_dic[key] = another_dic.index_to_url_dic[key]
+        for _, one_url in another_dic.index_to_url_dic.items():
+            next_index = len(self.index_to_url_dic)
+            self.index_to_url_dic[next_index] = one_url
 
-        for key in another_dic.index_to_num_words_dic:
-            self.index_to_num_words_dic[key] = another_dic.index_to_num_words_dic[key]
+        for _,num_words in another_dic.index_to_num_words_dic.items():
+            next_index = len(self.index_to_num_words_dic)
+            self.index_to_num_words_dic[next_index] = num_words
 
-        for key in another_dic.word_to_indices_dic:
-            if key in self.word_to_indices_dic:
-                self_one_word_dic = self.word_to_indices_dic[key]
-                for url_index in another_dic.word_to_indices_dic[key]:
-                    self_one_word_dic[url_index] = another_dic.word_to_indices_dic[key][url_index]
+        for word, another_indices_dic in another_dic.word_to_indices_dic.items():
+            if word in self.word_to_indices_dic:
+                self_one_word_dic = self.word_to_indices_dic[word]
+                for url_index in another_indices_dic:
+                    self_one_word_dic[url_index] = another_indices_dic[url_index]
+            else:
+                self.word_to_indices_dic[word] = another_indices_dic
+
 
 
 

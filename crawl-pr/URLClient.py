@@ -15,10 +15,10 @@ class URLClient():
     def SendPullRequest(self):
         r = self.sesh.get(self.URLService_Root + 'pull/', params={'id': self.registration_id})
         r = json.loads(r.text)
-        # if type(r) is str:
-        #     return [r]
-        # else:
-        return r
+        if type(r) is str:
+            return [r]
+        else:
+            return r
 
     def CheckTermination(self):
         r = self.sesh.get(self.URLService_Root + 'checkterminate/')
