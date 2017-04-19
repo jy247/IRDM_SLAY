@@ -2,16 +2,31 @@ import numpy as np
 import pickle
 
 
-def calculate_page_ranks(matrix, beta, url_dict):
+def has_converged(old_arr, new_arr, epsilon):
+    if len(old_arr) != len (new_arr):
+        return False
+
+    for num in range(len(old_arr)):
+        diff = abs(old_arr[num] - new_arr[num])
+        if diff > epsilon:
+            return False
+
+    return True
+
+
+def calculate_page_ranks(matrix, beta, url_dict, epsilon, max_itr):
     matrix_dim = len(matrix)
     vector = [1/matrix_dim for i in range(matrix_dim)]
-    url_arr_indexed = [None for i in range(len(url_dict))]
+    old_vector = [0 for i in range(matrix_dim)]
+    itr_count = 0
 
-    for i in range(10):
+    while not has_converged(old_vector, vector, epsilon) and itr_count < max_itr:
+        old_vector = vector
         mult = np.matmul(matrix, vector)
         vector = mult + (1-beta)/matrix_dim
+        itr_count = itr_count + 1
 
-    url_arr_indexed = [None for i in range(len(url_dict))]
+    url_arr_indexed = [None for i in range (matrix_dim)]
 
     for url in url_dict:
         url_arr_indexed[url_dict[url]] = url
@@ -42,7 +57,6 @@ def get_num_links(link_dict):
 def create_pr_matrix(data, beta, url_dict):
     num_urls = get_num_links(data)
     matrix = np.zeros([num_urls, num_urls])
-    rows_in_matrix = set([])
     url_count = 0
 
     for url in data.keys():
@@ -82,5 +96,5 @@ data = {'a': ['b','c','d'], 'b':['a','d'], 'c':['c'], 'd':['b', 'c']}
 
 url_dict = {}
 matrix = create_pr_matrix(data, .8, url_dict)
-pr_dict = calculate_page_ranks(matrix, .8, url_dict)
+pr_dict = calculate_page_ranks(matrix, .8, url_dict, .0001, 100)
 print(pr_dict)

@@ -1,7 +1,7 @@
 import numpy as np
 sum = 0
 
-for i in range(10):
-    sum += 1
+a = .5
+b = .6
 
-print(sum)
+print(np.allclose([a, b], 5))
