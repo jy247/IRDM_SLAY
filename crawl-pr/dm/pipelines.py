@@ -22,7 +22,7 @@ class DmPipeline(object):
 
     def open_spider(self, spider):
 
-        with open("../stop_words.txt") as f:
+        with open("./stop_words.txt") as f:
             all_lines = f.read().splitlines()
             for line in all_lines:
                 self.stop_words[line] = 0

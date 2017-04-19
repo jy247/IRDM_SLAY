@@ -45,9 +45,11 @@ class URLService(object):
                     if url[0-len(one_ext):] == one_ext:
                         exclude = True
 
-                for black_url in self.BLACKLIST_URLS:
-                    if url.find(black_url) > -1:
-                        exclude = True
+                # for black_url in self.BLACKLIST_URLS:
+                #     if url.find(black_url) > -1:
+                #         exclude = True
+                if url.find('www') == -1:
+                    exclude = True
 
                 if not exclude:
                     self.queue.append(url)

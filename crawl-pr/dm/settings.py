@@ -18,7 +18,7 @@ DNS_TIMEOUT = 5
 DOWNLOAD_TIMEOUT = 10
 
 IGNORED_EXTENSIONS = {
-    '7z', '7zip', 'xz', 'gz', 'tar', 'bz2', 'Z'  # archives
+    '7z', '7zip', 'xz', 'gz', 'tar', 'bz2', 'Z', 'txt.gz' , 'tar.gz', 'ps.gz' # archives
     'cdr',  # Corel Draw files
     'apk', # Android packages
 }

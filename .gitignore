@@ -47,3 +47,7 @@ fabric.properties
 *.pyc
 .idea/
 output.json
+
+crawl-pr/data/Rdic_content_1.pickle
+
+*.log
