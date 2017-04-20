@@ -10,7 +10,7 @@ class PreProcess():
     # stemmer = nltk.PorterStemmer()
    # tokenizer = nltk.LineTokenizer()
 
-    with open("stop_words.txt") as f:
+    with open("./stop_words.txt") as f:
         all_lines = f.read().splitlines()
         for line in all_lines:
             stop_words[line] = 0
@@ -26,14 +26,21 @@ class PreProcess():
                 ret_query.append(word)
         return ret_query
 
-
+    def process_data(self, data):
+        if data is str:
+            return self.process_sentence(data)
+        else:
+            one_array = []
+            for sentence in data:
+                one_array.extend(self.process_sentence(sentence))
+            return one_array
 
     def process_sentence(self, sentence):
         punc_less = self.remove_punc(sentence)
         caps_less = punc_less.lower()
         # self.stemmer.stem(caps_less)
         words = nltk.word_tokenize(caps_less, 'english')
-        print(words)
+        #print(words)
         return self.remove_stop_words(words)
 
 

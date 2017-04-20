@@ -1,7 +1,7 @@
 import subprocess
 import time
 
-n_crawlers = 15
+n_crawlers = 12
 
 for i in range(n_crawlers):
     fopen = open('./logs/crawler{}.log'.format(i), 'w')

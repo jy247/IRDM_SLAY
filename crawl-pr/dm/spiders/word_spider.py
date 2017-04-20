@@ -10,6 +10,7 @@ import sys
 from URLClient import URLClient
 from collections import deque
 from ReverseDictionary import ReverseDictionary
+from PreProcess import PreProcess
 
 # The command is scrapy crawl ucl.ac.uk -o output.json
 # Simply install all dependencies and it runs like a normal python app
@@ -23,6 +24,7 @@ class WordSpider(scrapy.Spider):
     write_interval = 1000
     data_folder = './data/'
     registration_id = 0
+    pp_obj = PreProcess()
 
     # The URL from which to begin crawling
     start_urls = [
@@ -56,16 +58,13 @@ class WordSpider(scrapy.Spider):
     def from_crawler(cls, crawler, *args, **kwargs):
         spider = super(WordSpider, cls).from_crawler(crawler, *args, **kwargs)
         crawler.signals.connect(spider.spider_closed, signal=signals.spider_closed)
-        # input("Press Enter to continue...")
+
         return spider
 
     def save_output(self):
 
         encoded_contents = self.contents_dic.Encode()
         encoded_titles = self.titles_dic.Encode()
-        print('writing files out to: {} id: {}'.format(self.data_folder, self.registration_id))
-        # with open(self.data_folder + 'ucl_all_urls_{}.txt'.format(self.registration_id), 'w') as f:
-        #     f.writelines([ l for l in self.parent_to_children_urls ])
 
         with open(self.data_folder + 'parent_to_children_urls_{}.pickle'.format(self.registration_id), 'wb') as handle:
             pickle.dump(self.parent_to_children_urls, handle, protocol=pickle.HIGHEST_PROTOCOL)
@@ -109,7 +108,7 @@ class WordSpider(scrapy.Spider):
             # if response.url == 'http://www.financialcomputing.org/phd-programme/structure' :
             #     a = 0
 
-            print('response:' + str(response.status))
+            #print('response:' + str(response.status))
             the_url = response.url
 
             if not the_url in self.urls_ive_seen:
@@ -126,10 +125,10 @@ class WordSpider(scrapy.Spider):
             content = response.css('p::text').extract()
             title = response.css('title::text').extract()
             self.process_data(the_url, content, title)
-            print('processed!')
+            #print('processed!')
 
             #follow children
-            print('{} links found: '.format(len(links)))
+            #print('{} links found: '.format(len(links)))
             if len(links) != 0:
                 self.parent_to_children_urls[the_url] = [l.url for l in links]
                 #print('test links: ' + str(self.parent_to_children_urls[response.url]))
@@ -183,8 +182,13 @@ class WordSpider(scrapy.Spider):
         #print('test url: {}'.format(url))
         #print('test content: {}'.format(content))
         # unique_id = self.urls_ive_seen[url]
-        self.contents_dic.add_one(url, content)
-        self.titles_dic.add_one(url, title)
+
+        processed_content = self.pp_obj.process_data(content)
+        self.contents_dic.add_one(url, processed_content)
+
+        processed_title = self.pp_obj.process_data(title)
+        self.titles_dic.add_one(url, processed_title)
+      #  print('processed content {}'.format(self.contents_dic.))
 
 
     # # Once the page has been crawled, this function parses the data

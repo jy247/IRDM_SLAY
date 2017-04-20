@@ -2,7 +2,20 @@ from collections import defaultdict
 
 class ReverseDictionary():
 
-    unique_id = 0
+
+
+    def __init__(self):
+        self.index_to_url_dic = {}
+
+        # we can use this dic to weight the word counts
+        self.index_to_num_words_dic = {}
+
+        # this dic contains a word to a dictionary of url index to a list of the position of the word in the content
+        # if we want to do pure bag of words we can just ignore the number of times info
+        self.word_to_indices_dic = {}
+
+        self.unique_id = 0
+
 
     #?PRIORITISE_WORDS_NEAR_TOP = True
     def Encode(self):
@@ -17,16 +30,6 @@ class ReverseDictionary():
         self.index_to_url_dic = all_dic['index_to_url_dic']
 
 
-    index_to_url_dic = {}
-
-    #we can use this dic to weight the word counts
-    index_to_num_words_dic = {}
-
-    #this dic contains a word to a dictionary of url index to a list of the position of the word in the content
-    #if we want to do pure bag of words we can just ignore the number of times info
-    word_to_indices_dic = {}
-
-
     # def add_all(self, urls, contents):
     #
     #     if type(urls) is str:
@@ -39,7 +42,10 @@ class ReverseDictionary():
 
     def add_one(self, one_url, one_content):
 
+        #print('content: {}'.format(one_content))
+        #input('press enter')
         num_words = len(one_content)
+        #print('numwords{}'.format(num_words))
         self.index_to_url_dic[self.unique_id] = one_url
         self.index_to_num_words_dic[self.unique_id] = num_words
 

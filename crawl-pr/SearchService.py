@@ -5,43 +5,60 @@ import json
 from ReverseDictionary import ReverseDictionary
 from PreProcess import PreProcess
 from cherrypy._cpserver import Server
+from Ranker import Ranker
 
 class SearchService(object):
 
-    full_dic = ReverseDictionary()
-    full_parent_to_children_urls_dic = {}
+    titles_dic = ReverseDictionary()
+    contents_dic = ReverseDictionary()
+    parent_to_children_urls_dic = {}
     return_values = []
+    rank_engine = Ranker()
+    data_root = './data/'
 
-    i = 0
-    try:
-        while True:
-            with open('./crawl-pr/data/Rdic_title_{}.pickle'.format(i), 'rb') as handle:
-                titles_dic = pickle.load(handle)
+    i =0
+    one_titles_dic = ReverseDictionary()
+    one_contents_dic = ReverseDictionary()
+    one_parent_to_children_urls_dic = {}
 
-            with open('./crawl-pr/data/parent_to_children_urls_{}.pickle'.format(i), 'rb') as handle:
-                parent_to_children_urls_dic = pickle.load(handle)
+    while i < 15:
+        try:
+            with open(data_root + 'Rdic_title_{}.pickle'.format(i), 'rb') as handle:
+                one_titles_dic = pickle.load(handle)
 
-            for key in parent_to_children_urls_dic:
-                full_parent_to_children_urls_dic[key] = parent_to_children_urls_dic[key]
+            with open(data_root + 'Rdic_content_{}.pickle'.format(i), 'rb') as handle:
+                one_contents_dic = pickle.load(handle)
 
-            new_dic = ReverseDictionary()
-            new_dic.Decode(titles_dic)
-            print('size of one dic: {}'.format(len(new_dic.index_to_url_dic)))
-            full_dic.combine(new_dic)
+            with open(data_root + 'parent_to_children_urls_{}.pickle'.format(i), 'rb') as handle:
+                one_parent_to_children_urls_dic = pickle.load(handle)
 
-            i += 1
-    except:
-        print('loaded {} files'.format(i))
-        print('size of full dic: {}'.format(len(full_dic.index_to_url_dic)))
-        print('size of parent to child dic: {}'.format(len(full_parent_to_children_urls_dic)))
+            for key in one_parent_to_children_urls_dic:
+                parent_to_children_urls_dic[key] = one_parent_to_children_urls_dic[key]
+
+            new_dic_titles = ReverseDictionary()
+            new_dic_titles.Decode(one_titles_dic)
+            print('size of one dic: {}'.format(len(new_dic_titles.index_to_url_dic)))
+            titles_dic.combine(new_dic_titles)
+
+            new_dic_contents = ReverseDictionary()
+            new_dic_contents.Decode(one_contents_dic)
+            contents_dic.combine(new_dic_contents)
+        except:
+            print('nothing found for i: {}'.format(i))
+
+        i += 1
+
+    print('loaded {} files'.format(i))
+    print('size of full dic: {}'.format(len(titles_dic.index_to_url_dic)))
+    print('size of parent to child dic: {}'.format(len(parent_to_children_urls_dic)))
+
+    #load page ranks
+    page_ranks = json.loads(data_root + 'page_ranks.json')
 
     @cherrypy.expose
-    def search(self, search_terms):
-        #stupid dynamically type language
+    def search(self, search_terms, weights):
 
-        return_values = []
-
-        self.full_dic.get_urls(search_terms)
+        return self.rank_engine.get_top_10(search_terms, weights, self.contents_dic, self.titles_dic, self.parent_to_children_urls_dic, self.page_ranks)
 
 if __name__ == '__main__':
 
