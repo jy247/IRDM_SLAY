@@ -3,12 +3,23 @@ import sys
 
 dic = pickle.load(open("page_rank_v5.p", "rb"))
 
-set = set()
+full_parent_to_children_urls_dic = {}
+i = 0
+while i < 15:
+    try:
+        with open('../crawl-pr/data/parent_to_children_urls_{}.pickle'.format(i), 'rb') as handle:
+            parent_to_children_urls_dic = pickle.load(handle)
 
-print(len(dic.keys()))
+        print("Adding in data for " + str(i))
+        for key in parent_to_children_urls_dic:
+            full_parent_to_children_urls_dic[key] = parent_to_children_urls_dic[key]
 
-for key in dic.keys():
-    set.add(dic[key])
+    except:
+        print('nothing found for i: {}'.format(i))
+    i += 1
+
+for key in full_parent_to_children_urls_dic.keys():
+    if 'meccano' in key:
+        print(key)
 
 
-print(dic['http://www.cs.ucl.ac.uk/home/'])

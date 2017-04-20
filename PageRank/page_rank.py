@@ -19,7 +19,7 @@ def calculate_page_ranks(matrix, beta, url_dict, epsilon, max_itr):
     old_vector = [0 for i in range(matrix_dim)]
     itr_count = 0
 
-    while itr_count < max_itr:
+    while not has_converged(old_vector, vector, epsilon) and itr_count < max_itr:
         old_vector = vector
         mult = np.matmul(matrix, vector)
         vector = mult + (1-beta)/matrix_dim
