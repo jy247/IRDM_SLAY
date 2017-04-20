@@ -67,8 +67,11 @@ class Ranker():
         for url, scores in urls_to_scores.items():
             if url in page_ranks:
                 sum_score = np.dot(scores, weights)
-                sum_score *= page_ranks[url]
+                pr = page_ranks[url]
+                sum_score *= pr
                 urls_to_sum_scores[url] = sum_score
+                #add page rank now to the scores to report it
+                scores.append(pr)
             else:
                 print('warn! URL not found in page ranks: {}'.format(url)  )
 
