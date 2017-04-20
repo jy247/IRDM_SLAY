@@ -1,7 +1,14 @@
-import numpy as np
-sum = 0
+import pickle
+import sys
 
-a = .5
-b = .6
+dic = pickle.load(open("page_rank_v5.p", "rb"))
 
-print(np.allclose([a, b], 5))
+set = set()
+
+print(len(dic.keys()))
+
+for key in dic.keys():
+    set.add(dic[key])
+
+
+print(dic['http://www.cs.ucl.ac.uk/home/'])

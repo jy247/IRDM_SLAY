@@ -15,11 +15,11 @@ def has_converged(old_arr, new_arr, epsilon):
 
 def calculate_page_ranks(matrix, beta, url_dict, epsilon, max_itr):
     matrix_dim = len(matrix)
-    vector = [1/matrix_dim for i in range(matrix_dim)]
+    vector = [np.float64(1/matrix_dim) for i in range(matrix_dim)]
     old_vector = [0 for i in range(matrix_dim)]
     itr_count = 0
 
-    while not has_converged(old_vector, vector, epsilon) and itr_count < max_itr:
+    while itr_count < max_itr:
         old_vector = vector
         mult = np.matmul(matrix, vector)
         vector = mult + (1-beta)/matrix_dim
@@ -70,9 +70,8 @@ def create_pr_matrix(data, beta, url_dict):
         num_outlinks = len(data[url])
 
         matrix_row = [0 for i in range(num_urls)]
-        cell_value = 1/num_outlinks
+        cell_value = np.float64(1/num_outlinks)
         for outlink in data[url]:
-            col_num = 0
             if outlink in url_dict:
                 col_num = url_dict[outlink]
             else:
@@ -96,5 +95,25 @@ def create_pr_matrix(data, beta, url_dict):
 def get_page_ranks(data):
     url_dict = {}
     matrix = create_pr_matrix(data, .8, url_dict)
-    pr_dict = calculate_page_ranks(matrix, .8, url_dict, .0001, 100)
+    pr_dict = calculate_page_ranks(matrix, .8, url_dict, .0001, 600)
     return pr_dict
+
+full_parent_to_children_urls_dic = {}
+i = 0
+while i < 15:
+    try:
+        with open('../crawl-pr/data/parent_to_children_urls_{}.pickle'.format(i), 'rb') as handle:
+            parent_to_children_urls_dic = pickle.load(handle)
+
+        print("Adding in data for " + str(i))
+        for key in parent_to_children_urls_dic:
+            full_parent_to_children_urls_dic[key] = parent_to_children_urls_dic[key]
+
+    except:
+        print('nothing found for i: {}'.format(i))
+    i += 1
+
+page_rank = get_page_ranks(full_parent_to_children_urls_dic)
+pickle.dump(page_rank, open("page_rank_v5.p", "wb"))
+
+
