@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <form method="get" action="set_weights">
-        <input type="text" value="W1 (content matching)" name="w1" />
-        <input type="text" value="W2 (content proximity)" name="w2" />
-        <input type="text" value="W3 (title matching)" name="w3" />
-        <input type="text" value="W4 (title proximity)" name="w4" />
-        <input type="text" value="W5 (url matching)" name="w5" />
-        <p>Defaults = 1.0</p>
-    </form>
+
     <form method="get" action="index">
+        <input type="text" value="" name="w1">W1 (content matching)</input>
+        <input type="text" value="" name="w2" >W2 (content proximity)</input>
+        <input type="text" value="" name="w3">W3 (title matching)</input>
+        <input type="text" value="" name="w4">W4 (title proximity)</input>
+        <input type="text" value="" name="w5">W5 (url matching)</input>
         <input type="text" value="" name="search_terms" />
         <button id="search_button">Search</button>
     </form>

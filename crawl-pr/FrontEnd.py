@@ -23,10 +23,24 @@ class FrontEnd(object):
 
             response = self.sesh.get(self.SearchService_Root + 'search/', params={'search_terms': search_terms,
                                                                                   'weights': weights})
+            #
+            # for item in root.findall('body/form/input'):
+            #     if item.get('name') == 'search_terms':
+            #         item.set('value', search_terms)
 
             for item in root.findall('body/form/input'):
                 if item.get('name') == 'search_terms':
-                    item.text = search_terms
+                    item.set('value', search_terms)
+                if item.get('name') == 'w1':
+                    item.set('value', str(w1))
+                if item.get('name') == 'w2':
+                    item.set('value', str(w2))
+                if item.get('name') == 'w3':
+                    item.set('value', str(w3))
+                if item.get('name') == 'w4':
+                    item.set('value', str(w4))
+                if item.get('name') == 'w5':
+                    item.set('value', str(w5))
 
             ret_urls = json.loads(response.text)
             i = 0
