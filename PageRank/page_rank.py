@@ -1,7 +1,6 @@
 import numpy as np
 import pickle
 
-
 def has_converged(old_arr, new_arr, epsilon):
     if len(old_arr) != len (new_arr):
         return False
@@ -85,16 +84,17 @@ def create_pr_matrix(data, beta, url_dict):
 
         matrix[row_num] = matrix_row
 
-    matrix = np.multiply(matrix, (beta))
+    matrix = np.multiply(matrix, beta)
 
     return np.rot90(np.fliplr(matrix))
 
-with open('parent_to_children_urls_0.pickle', 'rb') as f:
-    data = pickle.load(f)
+# with open('parent_to_children_urls_0.pickle', 'rb') as f:
+#     data = pickle.load(f)
+#
+# data = {'a': ['b','c','d'], 'b':['a','d'], 'c':['c'], 'd':['b', 'c']}
 
-data = {'a': ['b','c','d'], 'b':['a','d'], 'c':['c'], 'd':['b', 'c']}
-
-url_dict = {}
-matrix = create_pr_matrix(data, .8, url_dict)
-pr_dict = calculate_page_ranks(matrix, .8, url_dict, .0001, 100)
-print(pr_dict)
+def get_page_ranks(data):
+    url_dict = {}
+    matrix = create_pr_matrix(data, .8, url_dict)
+    pr_dict = calculate_page_ranks(matrix, .8, url_dict, .0001, 100)
+    return pr_dict
