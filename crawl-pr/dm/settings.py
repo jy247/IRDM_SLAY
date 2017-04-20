@@ -14,8 +14,8 @@ BOT_NAME = 'dm'
 SPIDER_MODULES = ['dm.spiders']
 NEWSPIDER_MODULE = 'dm.spiders'
 
-DNS_TIMEOUT = 5
-DOWNLOAD_TIMEOUT = 10
+DNS_TIMEOUT = 10
+DOWNLOAD_TIMEOUT = 20
 
 IGNORED_EXTENSIONS = {
     '7z', '7zip', 'xz', 'gz', 'tar', 'bz2', 'Z', 'txt.gz' , 'tar.gz', 'ps.gz' # archives
