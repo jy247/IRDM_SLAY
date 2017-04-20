@@ -77,6 +77,9 @@ class ReverseDictionary():
             # dic of url index to number of occurances of word
             url_index_to_positions_dic = self.word_to_indices_dic[word]
             for url_index in url_index_to_positions_dic:
+                #some problem...
+                if self.index_to_num_words_dic[url_index] == 0:
+                    self.index_to_num_words_dic[url_index] = 100
                 all_url_indices_found[url_index] = len(url_index_to_positions_dic[url_index]) \
                                                    / self.index_to_num_words_dic[url_index]
 

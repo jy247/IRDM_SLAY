@@ -19,7 +19,7 @@ class SearchService(object):
     i =0
     one_titles_dic = ReverseDictionary()
     one_contents_dic = ReverseDictionary()
-    one_parent_to_children_urls_dic = {}
+    # one_parent_to_children_urls_dic = {}
 
     while i < 15:
         try:
@@ -29,11 +29,11 @@ class SearchService(object):
             with open(data_root + 'Rdic_content_{}.pickle'.format(i), 'rb') as handle:
                 one_contents_dic = pickle.load(handle)
 
-            with open(data_root + 'parent_to_children_urls_{}.pickle'.format(i), 'rb') as handle:
-                one_parent_to_children_urls_dic = pickle.load(handle)
-
-            for key in one_parent_to_children_urls_dic:
-                parent_to_children_urls_dic[key] = one_parent_to_children_urls_dic[key]
+            # with open(data_root + 'parent_to_children_urls_{}.pickle'.format(i), 'rb') as handle:
+            #     one_parent_to_children_urls_dic = pickle.load(handle)
+            #
+            # for key in one_parent_to_children_urls_dic:
+            #     parent_to_children_urls_dic[key] = one_parent_to_children_urls_dic[key]
 
             new_dic_titles = ReverseDictionary()
             new_dic_titles.Decode(one_titles_dic)
@@ -50,7 +50,7 @@ class SearchService(object):
 
     print('loaded {} files'.format(i))
     print('size of full dic: {}'.format(len(titles_dic.index_to_url_dic)))
-    print('size of parent to child dic: {}'.format(len(parent_to_children_urls_dic)))
+    #print('size of parent to child dic: {}'.format(len(parent_to_children_urls_dic)))
 
     #load page ranks
     page_ranks = json.loads(data_root + 'page_ranks.json')
@@ -58,7 +58,10 @@ class SearchService(object):
     @cherrypy.expose
     def search(self, search_terms, weights):
 
-        return self.rank_engine.get_top_10(search_terms, weights, self.contents_dic, self.titles_dic, self.parent_to_children_urls_dic, self.page_ranks)
+        weight_as_numbers = []
+        for one_weight in weights:
+            weight_as_numbers.append(float(one_weight))
+        return self.rank_engine.get_top_10(search_terms, weight_as_numbers, self.contents_dic, self.titles_dic, self.page_ranks)
 
 if __name__ == '__main__':
 

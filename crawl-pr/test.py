@@ -8,9 +8,10 @@ sesh = requests.session()
 
 SearchService_Root = 'http://127.0.0.1:8082/'
 search_terms = 'cat'
+weights = ['0.5','0.5','0.5','0.5','0.5']
 
-
-response = sesh.get(SearchService_Root + 'search/', params={'search_terms': search_terms})
+response = sesh.get(SearchService_Root + 'search/', params={'search_terms': search_terms, 'weights': weights})
+val = json.loads(response.text)
 print(json.loads(response.text))
 
 # with open('./data/url_service.pickle', 'rb') as handle:

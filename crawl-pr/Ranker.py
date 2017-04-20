@@ -56,13 +56,18 @@ class Ranker():
         for index, url in contents_rd.index_to_url_dic.items():
             for term in terms_list:
                 if url.find(term) > -1:
+                    if url in urls_to_scores:
+                        scores = urls_to_scores[url]
+                    else:
+                        scores = [0, 0, 0, 0, 0]
+                        urls_to_scores[url] = scores
                     scores[4] += 1
 
         urls_to_sum_scores = {}
-        for url, scores in urls_to_scores:
+        for url, scores in urls_to_scores.items():
             if url in page_ranks:
                 sum_score = np.dot(scores, weights)
-                sum_score *= page_ranks[url]
+                #sum_score *= page_ranks[url]
                 urls_to_sum_scores[url] = sum_score
             else:
                 print('warn! URL not found in page ranks: {}'.format(url)  )
@@ -72,7 +77,7 @@ class Ranker():
         sorted_x = sorted(urls_to_sum_scores.items(), key=operator.itemgetter(1))
         sorted_x = sorted_x[0:10]
         ret_urls_and_scores = {}
-        for url in sorted_x:
+        for url,_ in sorted_x:
             ret_urls_and_scores[url] = urls_to_scores[url]
 
         return json.dumps(ret_urls_and_scores)
