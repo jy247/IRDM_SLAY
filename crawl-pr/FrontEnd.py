@@ -23,10 +23,19 @@ class FrontEnd(object):
 
             response = self.sesh.get(self.SearchService_Root + 'search/', params={'search_terms': search_terms,
                                                                                   'weights': weights})
+
+            for item in root.findall('body/form/input'):
+                if item.get('name') == 'search_terms':
+                    item.text = search_terms
+
             ret_urls = json.loads(response.text)
             i = 0
             for item in root.findall('body/ul/li'):
-                item.text = ret_urls[i]
+                if i < 10:
+                    item.text = ret_urls[i][0]
+                else:
+                    item.text = str(ret_urls[i-10][1])
+                i += 1
 
         return xml.etree.ElementTree.tostring(root)
 

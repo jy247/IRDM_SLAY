@@ -7,7 +7,7 @@ print(os.getcwd())
 sesh = requests.session()
 
 SearchService_Root = 'http://127.0.0.1:8082/'
-search_terms = 'cat'
+search_terms = 'publications'
 weights = ['0.5','0.5','0.5','0.5','0.5']
 
 response = sesh.get(SearchService_Root + 'search/', params={'search_terms': search_terms, 'weights': weights})

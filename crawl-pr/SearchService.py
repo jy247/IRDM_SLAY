@@ -54,16 +54,17 @@ class SearchService(object):
     #print('size of parent to child dic: {}'.format(len(parent_to_children_urls_dic)))
 
     #load page ranks
-    page_ranks = json.loads(data_root + 'page_ranks.json')
+    #page_ranks = json.loads(data_root + 'page_ranks.json')
+    page_ranks = pickle.load(open("./data/page_rank_v5.p", "rb"))
 
     @cherrypy.expose
     def search(self, search_terms, weights):
 
         weight_as_numbers = []
         for one_weight in weights:
-            if string.isnumeric(one_weight):
+            try:
                 weight_as_numbers.append(float(one_weight))
-            else:
+            except:
                 weight_as_numbers.append(1)
         return self.rank_engine.get_top_10(search_terms, weight_as_numbers, self.contents_dic, self.titles_dic, self.page_ranks)
 

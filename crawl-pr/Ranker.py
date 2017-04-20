@@ -74,7 +74,7 @@ class Ranker():
 
 
         #sort and return top 10
-        sorted_x = sorted(urls_to_sum_scores.items(), key=operator.itemgetter(1))
+        sorted_x = sorted(urls_to_sum_scores.items(), key=operator.itemgetter(1), reverse=True)
         sorted_x = sorted_x[0:10]
         ret_urls_and_scores = []
         for url,_ in sorted_x:
