@@ -23,7 +23,7 @@ class FrontEnd(object):
 
             response = self.sesh.get(self.SearchService_Root + 'search/', params={'search_terms': search_terms,
                                                                                   'weights': weights})
-            ret_urls = response.text
+            ret_urls = json.loads(response.text)
             i = 0
             for item in root.findall('body/ul/li'):
                 item.text = ret_urls[i]

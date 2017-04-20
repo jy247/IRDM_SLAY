@@ -1,7 +1,8 @@
-import random
+import string
 import pickle
 import cherrypy
 import json
+
 from ReverseDictionary import ReverseDictionary
 from PreProcess import PreProcess
 from cherrypy._cpserver import Server
@@ -60,7 +61,10 @@ class SearchService(object):
 
         weight_as_numbers = []
         for one_weight in weights:
-            weight_as_numbers.append(float(one_weight))
+            if string.isnumeric(one_weight):
+                weight_as_numbers.append(float(one_weight))
+            else:
+                weight_as_numbers.append(1)
         return self.rank_engine.get_top_10(search_terms, weight_as_numbers, self.contents_dic, self.titles_dic, self.page_ranks)
 
 if __name__ == '__main__':
